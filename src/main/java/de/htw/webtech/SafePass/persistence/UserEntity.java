@@ -1,26 +1,39 @@
-package de.htw.webtech.SafePass.web.api;
+package de.htw.webtech.SafePass.persistence;
 
-public class User {
-    private long id;
+import javax.persistence.*;
+
+@Entity(name = "users")
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "first_name", nullable = false)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false)
     private String lastName;
+
+    @Column(name = "country")
     private String country;
+
+    @Column(name = "zip_code")
     private String zipCode;
 
-    public User(long id, String firstName, String lastName, String country, String zipCode) {
-        this.id = id;
+    public UserEntity(String firstName, String lastName, String country, String zipCode) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.country = country;
         this.zipCode = zipCode;
     }
 
-    public long getId() {
-        return id;
+    protected UserEntity() {
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public Long getId() {
+        return id;
     }
 
     public String getFirstName() {
