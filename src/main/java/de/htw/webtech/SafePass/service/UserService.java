@@ -4,10 +4,7 @@ import de.htw.webtech.SafePass.persistence.UserEntity;
 import de.htw.webtech.SafePass.persistence.UserRepository;
 import de.htw.webtech.SafePass.web.api.User;
 import de.htw.webtech.SafePass.web.api.UserManipulationRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +51,15 @@ public class UserService {
         userRepository.save(userEntity);
 
         return transformEntity(userEntity);
+    }
+
+    public boolean deleteById(Long id) {
+        if (!userRepository.existsById(id)) {
+            return false;
+        }
+
+        userRepository.deleteById(id);
+        return true;
     }
 
     private User transformEntity(UserEntity userEntity) {
