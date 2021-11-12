@@ -40,6 +40,22 @@ public class UserService {
         return transformEntity(userEntity);
     }
 
+    public User update(Long id, UserManipulationRequest request) {
+        var userEntityOptional = userRepository.findById(id);
+        if (userEntityOptional.isEmpty()) {
+            return null;
+        }
+
+        var userEntity = userEntityOptional.get();
+        userEntity.setFirstName(request.getFirstName());
+        userEntity.setLastName(request.getLastName());
+        userEntity.setCountry(request.getCountry());
+        userEntity.setZipCode(request.getZipCode());
+        userRepository.save(userEntity);
+
+        return transformEntity(userEntity);
+    }
+
     private User transformEntity(UserEntity userEntity) {
         return new User(
                 userEntity.getId(),
