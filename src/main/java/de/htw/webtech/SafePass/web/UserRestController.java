@@ -4,10 +4,7 @@ import de.htw.webtech.SafePass.service.UserService;
 import de.htw.webtech.SafePass.web.api.User;
 import de.htw.webtech.SafePass.web.api.UserManipulationRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -25,6 +22,12 @@ public class UserRestController {
     @GetMapping(path = "/api/v1/users")
     public ResponseEntity<List<User>> fetchUsers() {
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @GetMapping(path = "/api/v1/users/{id}")
+    public ResponseEntity<User> fetchUserById(@PathVariable Long id) {
+        var user = userService.findById(id);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
     @PostMapping(path = "/api/v1/users")

@@ -4,7 +4,10 @@ import de.htw.webtech.SafePass.persistence.UserEntity;
 import de.htw.webtech.SafePass.persistence.UserRepository;
 import de.htw.webtech.SafePass.web.api.User;
 import de.htw.webtech.SafePass.web.api.UserManipulationRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +26,11 @@ public class UserService {
         return users.stream()
                 .map(this::transformEntity)
                 .collect(Collectors.toList());
+    }
+
+    public User findById(Long id) {
+        var userEntity = userRepository.findById(id);
+        return userEntity.map(this::transformEntity).orElse(null);
     }
 
     public User create(UserManipulationRequest request) {
