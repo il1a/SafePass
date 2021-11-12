@@ -3,6 +3,7 @@ package de.htw.webtech.SafePass.service;
 import de.htw.webtech.SafePass.persistence.UserEntity;
 import de.htw.webtech.SafePass.persistence.UserRepository;
 import de.htw.webtech.SafePass.web.api.User;
+import de.htw.webtech.SafePass.web.api.UserManipulationRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +21,24 @@ public class UserService {
     public List<User> findAll() {
         List<UserEntity> users = userRepository.findAll();
         return users.stream()
-                .map(userEntity -> new User(
-                        userEntity.getId(),
-                        userEntity.getFirstName(),
-                        userEntity.getLastName(),
-                        userEntity.getCountry(),
-                        userEntity.getZipCode()
-                ))
+                .map(this::transformEntity)
                 .collect(Collectors.toList());
+    }
+
+    public User create(UserManipulationRequest request) {
+        var userEntity = new UserEntity(request.getFirstName(), request.getLastName(), request.getCountry(), request.getZipCode());
+        userEntity = userRepository.save(userEntity);
+
+        return transformEntity(userEntity);
+    }
+
+    private User transformEntity(UserEntity userEntity) {
+        return new User(
+                userEntity.getId(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getCountry(),
+                userEntity.getZipCode()
+        );
     }
 }
