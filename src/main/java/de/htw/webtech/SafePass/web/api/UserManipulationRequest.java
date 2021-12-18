@@ -14,6 +14,9 @@ public class UserManipulationRequest {
         this.userRole = userRole;
     }
 
+    public UserManipulationRequest() {
+    }
+
     public String getEmail() {
         return email;
     }

@@ -18,6 +18,9 @@ public class ItemManipulationRequest {
         this.holderId = holderId;
     }
 
+    public ItemManipulationRequest() {
+    }
+
     public String getTitle() {
         return title;
     }

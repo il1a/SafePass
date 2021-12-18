@@ -1,7 +1,7 @@
 [![CI](https://github.com/il1a/SafePass/actions/workflows/tests.yml/badge.svg)](https://github.com/il1a/SafePass/actions/workflows/tests.yml)
 # SafePass
 
-v0.3
+v0.4
 
 This is a collaborative web tech project of Ilia Sokolovskiy & Nick Schmeiter.
 
