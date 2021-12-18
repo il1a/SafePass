@@ -2,6 +2,7 @@ package de.htw.webtech.SafePass.service;
 
 import de.htw.webtech.SafePass.persistence.UserEntity;
 import de.htw.webtech.SafePass.persistence.UserRepository;
+import de.htw.webtech.SafePass.persistence.UserRole;
 import de.htw.webtech.SafePass.web.api.User;
 import de.htw.webtech.SafePass.web.api.UserManipulationRequest;
 import org.springframework.stereotype.Service;
@@ -13,28 +14,30 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserTransformer userTransformer;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserTransformer userTransformer) {
         this.userRepository = userRepository;
+        this.userTransformer = userTransformer;
     }
 
     public List<User> findAll() {
         List<UserEntity> users = userRepository.findAll();
         return users.stream()
-                .map(this::transformEntity)
+                .map(userTransformer::transformEntity)
                 .collect(Collectors.toList());
     }
 
     public User findById(Long id) {
         var userEntity = userRepository.findById(id);
-        return userEntity.map(this::transformEntity).orElse(null);
+        return userEntity.map(userTransformer::transformEntity).orElse(null);
     }
 
     public User create(UserManipulationRequest request) {
-        var userEntity = new UserEntity(request.getFirstName(), request.getLastName(), request.getCountry(), request.getZipCode());
+        var userRole = UserRole.valueOf(request.getUserRole());
+        var userEntity = new UserEntity(request.getEmail(), request.getUsername(), request.getPassword(), userRole);
         userEntity = userRepository.save(userEntity);
-
-        return transformEntity(userEntity);
+        return userTransformer.transformEntity(userEntity);
     }
 
     public User update(Long id, UserManipulationRequest request) {
@@ -44,13 +47,13 @@ public class UserService {
         }
 
         var userEntity = userEntityOptional.get();
-        userEntity.setFirstName(request.getFirstName());
-        userEntity.setLastName(request.getLastName());
-        userEntity.setCountry(request.getCountry());
-        userEntity.setZipCode(request.getZipCode());
-        userRepository.save(userEntity);
+        userEntity.setEmail(request.getEmail());
+        userEntity.setUsername(request.getUsername());
+        userEntity.setPassword(request.getPassword());
+        userEntity.setUserRole(UserRole.valueOf(request.getUserRole()));
+        userEntity = userRepository.save(userEntity);
 
-        return transformEntity(userEntity);
+        return userTransformer.transformEntity(userEntity);
     }
 
     public boolean deleteById(Long id) {
@@ -60,15 +63,5 @@ public class UserService {
 
         userRepository.deleteById(id);
         return true;
-    }
-
-    private User transformEntity(UserEntity userEntity) {
-        return new User(
-                userEntity.getId(),
-                userEntity.getFirstName(),
-                userEntity.getLastName(),
-                userEntity.getCountry(),
-                userEntity.getZipCode()
-        );
     }
 }

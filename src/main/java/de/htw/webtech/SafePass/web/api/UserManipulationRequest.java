@@ -2,47 +2,47 @@ package de.htw.webtech.SafePass.web.api;
 
 public class UserManipulationRequest {
 
-    private String firstName;
-    private String lastName;
-    private String country;
-    private String zipCode;
+    private String email;
+    private String username;
+    private String password;
+    private String userRole;
 
-    public UserManipulationRequest(String firstName, String lastName, String country, String zipCode) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.country = country;
-        this.zipCode = zipCode;
+    public UserManipulationRequest(String email, String username, String password, String userRole) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getEmail() {
+        return email;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getCountry() {
-        return country;
+    public String getPassword() {
+        return password;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getZipCode() {
-        return zipCode;
+    public String getUserRole() {
+        return userRole;
     }
 
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
     }
 }
