@@ -26,6 +26,12 @@ public class ItemRestController {
         return ResponseEntity.ok(itemService.findAll());
     }
 
+    @GetMapping(path = "/api/v1/items/{id}")
+    public ResponseEntity<Item> fetchItemById(@PathVariable Long id) {
+        var item = itemService.findById(id);
+        return item != null ? ResponseEntity.ok(item) : ResponseEntity.notFound().build();
+    }
+
     @PostMapping(path = "/api/v1/items")
     public ResponseEntity<Void> createItem(@RequestBody ItemManipulationRequest request) throws URISyntaxException {
         var item = itemService.create(request);
@@ -33,15 +39,15 @@ public class ItemRestController {
         return ResponseEntity.created(uri).build();
     }
 
-//    @PutMapping(path = "/api/v1/users/{id}")
-//    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserManipulationRequest request) {
-//        var user = userService.update(id, request);
-//        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
-//    }
-//
-//    @DeleteMapping(path = "/api/v1/users/{id}")
-//    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-//        boolean successful = userService.deleteById(id);
-//        return successful ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-//    }
+    @PutMapping(path = "/api/v1/items/{id}")
+    public ResponseEntity<Item> updateItem(@PathVariable Long id, @RequestBody ItemManipulationRequest request) {
+        var item = itemService.update(id, request);
+        return item != null ? ResponseEntity.ok(item) : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping(path = "/api/v1/items/{id}")
+    public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
+        boolean successful = itemService.deleteById(id);
+        return successful ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 }
